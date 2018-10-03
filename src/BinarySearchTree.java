@@ -20,6 +20,8 @@ public class BinarySearchTree<E extends Comparable<E>> {
         }
     }
 
+    protected static int depthCount;
+
     protected Node root = null;
 
     protected void visit(Node n) {
@@ -118,24 +120,42 @@ public class BinarySearchTree<E extends Comparable<E>> {
 
     // Method #1.
     public Node findNode(E val) {
-        if (val.compareTo(root.value) == 0) {
-            return root;
-        } else if (val.compareTo(root.leftChild.value) == 0) {
-            return root.leftChild;
-        } else if (val.compareTo(root.rightChild.value) == 0) {
-            return root.rightChild;
-        } else {
+        return findNode(root, val);
+    }
+
+    public Node findNode(Node n, E val) {
+        if (n == null) {
             return null;
+        } else if (n.value.compareTo(val) == 0) {
+            return n;
+        } else if (n.value.compareTo(val) < 0) {
+            return findNode(n.leftChild, val);
+        } else {
+            return findNode(n.rightChild, val);
         }
     }
 
     // Method #2.
     protected int depth(E val) {
+        depthCount = 0;
+        return depth(root, val);
+    }
 
-		/* IMPLEMENT THIS METHOD! */
-
-        return -2; // this line is here only so this code will compile if you don't modify it
-
+    protected int depth(Node n, E val) {
+        if (n == null || n.value == null) {
+            return -1;
+        }
+        if (n.value.compareTo(val) == 0) {
+            return depthCount;
+        }
+        if (n.value.compareTo(val) < 0) {
+            depth(n.leftChild, val);
+            depthCount++;
+        } else {
+            depth(n.rightChild, val);
+            depthCount++;
+        }
+        return depthCount;
     }
 
     // Method #3.
