@@ -126,7 +126,7 @@ public class BinarySearchTree<E extends Comparable<E>> {
     public Node findNode(Node n, E val) {
         if (n == null) {
             return null;
-        } else if (n.value.compareTo(val) == 0) {
+        } else if (n.value.equals(val)) {
             return n;
         } else if (n.value.compareTo(val) < 0) {
             return findNode(n.leftChild, val);
@@ -145,7 +145,7 @@ public class BinarySearchTree<E extends Comparable<E>> {
         if (n == null || n.value == null) {
             return -1;
         }
-        if (n.value.compareTo(val) == 0) {
+        if (n.value.equals(val)) {
             return depthCount;
         }
         if (n.value.compareTo(val) < 0) {
@@ -160,13 +160,25 @@ public class BinarySearchTree<E extends Comparable<E>> {
 
     // Method #3.
     protected int height(E val) {
-
-		/* IMPLEMENT THIS METHOD! */
-
-        return -2; // this line is here only so this code will compile if you don't modify it
-
+        return height(root, val);
     }
 
+    protected int height(Node n, E val) {
+        if (n == null) {
+            return -1;
+        }
+        int heightLeft = 0;
+        int heightRight = 0;
+        if (n.leftChild != null && n.leftChild.value != val)
+            heightLeft = height(n.leftChild, val);
+        if (n.rightChild != null && n.rightChild.value != val)
+            heightRight = height(n.rightChild, val);
+        if (heightLeft > heightRight) {
+            return heightLeft + 1;
+        } else {
+            return heightRight + 1;
+        }
+    }
 
     // Method #4.
     protected boolean isBalanced(Node n) {
