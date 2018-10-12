@@ -6,15 +6,17 @@ public class BinarySearchTree<E extends Comparable<E>> {
         E value;
         Node leftChild = null;
         Node rightChild = null;
+
         Node(E value) {
             this.value = value;
         }
+
         @Override
         public boolean equals(Object obj) {
             if ((obj instanceof BinarySearchTree.Node) == false)
                 return false;
             @SuppressWarnings("unchecked")
-            Node other = (BinarySearchTree<E>.Node)obj;
+            Node other = (BinarySearchTree<E>.Node) obj;
             return other.value.compareTo(value) == 0 &&
                     other.leftChild == leftChild && other.rightChild == rightChild;
         }
@@ -88,12 +90,12 @@ public class BinarySearchTree<E extends Comparable<E>> {
         } else if (val.compareTo(n.value) == 1) {
             return remove(n.rightChild, n, val);
         } else {
-            if (n.leftChild != null && n.rightChild != null){
+            if (n.leftChild != null && n.rightChild != null) {
                 n.value = maxValue(n.leftChild);
                 remove(n.leftChild, n, n.value);
             } else if (parent == null) {
                 root = n.leftChild != null ? n.leftChild : n.rightChild;
-            } else if (parent.leftChild == n){
+            } else if (parent.leftChild == n) {
                 parent.leftChild = n.leftChild != null ? n.leftChild : n.rightChild;
             } else {
                 parent.rightChild = n.leftChild != null ? n.leftChild : n.rightChild;
@@ -160,7 +162,8 @@ public class BinarySearchTree<E extends Comparable<E>> {
 
     // Method #3.
     protected int height(E val) {
-        return height(root, val);
+        final Node nodeToMeasure = findNode(val);
+        return height(nodeToMeasure, val);
     }
 
     protected int height(Node n, E val) {
