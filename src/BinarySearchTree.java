@@ -1,6 +1,3 @@
-
-
-
 public class BinarySearchTree<E extends Comparable<E>> {
     class Node {
         E value;
@@ -139,7 +136,7 @@ public class BinarySearchTree<E extends Comparable<E>> {
 
     // Method #2.
     protected int depth(E val) {
-        depthCount = 0;
+        depthCount = 1;
         return depth(root, val);
     }
 
@@ -183,22 +180,34 @@ public class BinarySearchTree<E extends Comparable<E>> {
         }
     }
 
+    protected boolean traverseTreeDFS(Node n) {
+        if (root.leftChild != null) {
+            traverseTreeDFS(root.leftChild);
+            if (!isBalanced(root.leftChild)) {
+                return false;
+            }
+        }
+        if (root.rightChild != null) {
+            traverseTreeDFS(root.rightChild);
+            if (!isBalanced(root.rightChild)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     // Method #4.
     protected boolean isBalanced(Node n) {
-
-		/* IMPLEMENT THIS METHOD! */
-
-        return true; // this line is here only so this code will compile if you don't modify it
-
+        if (n == null || n.value == null) {
+            return false;
+        }
+        int leftValue = findNode(n.leftChild.value) != null ? height(n.leftChild.value) : -1;
+        int rightValue = findNode(n.rightChild.value) != null ? height(n.rightChild.value) : -1;
+        return Math.abs((leftValue - rightValue)) <= 1;
     }
 
     // Method #5. .
     public boolean isBalanced() {
-
-		/* IMPLEMENT THIS METHOD! */
-
-        return false; // this line is here only so this code will compile if you don't modify it
-
+        return traverseTreeDFS(root);
     }
-
 }
