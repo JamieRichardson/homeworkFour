@@ -123,7 +123,7 @@ public class BinarySearchTree<E extends Comparable<E>> {
     }
 
     public Node findNode(Node n, E val) {
-        if (n == null) {
+        if (n == null || val == null) {
             return null;
         } else if (n.value.equals(val)) {
             return n;
@@ -141,7 +141,7 @@ public class BinarySearchTree<E extends Comparable<E>> {
     }
 
     protected int depth(Node n, E val) {
-        if (n == null || n.value == null) {
+        if (n == null || n.value == null || val == null) {
             return -1;
         }
         if (n.value.equals(val)) {
@@ -164,7 +164,7 @@ public class BinarySearchTree<E extends Comparable<E>> {
     }
 
     protected int height(Node n, E val) {
-        if (n == null) {
+        if (n == null || val == null) {
             return -1;
         }
         int heightLeft = 0;
