@@ -181,17 +181,14 @@ public class BinarySearchTree<E extends Comparable<E>> {
     }
 
     protected boolean traverseTreeDFS(Node n) {
+        if(!isBalanced(n)) {
+            return false;
+        }
         if (root.leftChild != null) {
             traverseTreeDFS(root.leftChild);
-            if (!isBalanced(root.leftChild)) {
-                return false;
-            }
         }
         if (root.rightChild != null) {
             traverseTreeDFS(root.rightChild);
-            if (!isBalanced(root.rightChild)) {
-                return false;
-            }
         }
         return true;
     }
