@@ -125,9 +125,9 @@ public class BinarySearchTree<E extends Comparable<E>> {
     public Node findNode(Node n, E val) {
         if (n == null || val == null) {
             return null;
-        } else if (n.value.equals(val)) {
+        } else if (n.value.compareTo(val) == 0) {
             return n;
-        } else if (n.value.compareTo(val) < 0) {
+        } else if (n.value.compareTo(val) > 0) {
             return findNode(n.leftChild, val);
         } else {
             return findNode(n.rightChild, val);
@@ -136,7 +136,10 @@ public class BinarySearchTree<E extends Comparable<E>> {
 
     // Method #2.
     protected int depth(E val) {
-        depthCount = 1;
+        depthCount = 0;
+        if(findNode(val) == null) {
+            return -1;
+        }
         return depth(root, val);
     }
 
@@ -147,19 +150,28 @@ public class BinarySearchTree<E extends Comparable<E>> {
         if (n.value.equals(val)) {
             return depthCount;
         }
-        if (n.value.compareTo(val) < 0) {
+        if (n.value.compareTo(val) > 0) {
+            depthCount++;
             depth(n.leftChild, val);
-            depthCount++;
         } else {
-            depth(n.rightChild, val);
             depthCount++;
+            depth(n.rightChild, val);
         }
         return depthCount;
     }
 
     // Method #3.
     protected int height(E val) {
+        if (val == null) {
+            return -1;
+        }
         final Node nodeToMeasure = findNode(val);
+        if (nodeToMeasure == null) {
+            return -1;
+        }
+        if (nodeToMeasure.leftChild == null && nodeToMeasure.rightChild == null) {
+            return 0;
+        }
         return height(nodeToMeasure, val);
     }
 
@@ -167,12 +179,14 @@ public class BinarySearchTree<E extends Comparable<E>> {
         if (n == null || val == null) {
             return -1;
         }
-        int heightLeft = 0;
-        int heightRight = 0;
-        if (n.leftChild != null && n.leftChild.value != val)
+        int heightLeft = -1;
+        int heightRight = -1;
+        if (n.leftChild != null && n.leftChild.value != val) {
             heightLeft = height(n.leftChild, val);
-        if (n.rightChild != null && n.rightChild.value != val)
+        }
+        if (n.rightChild != null && n.rightChild.value != val) {
             heightRight = height(n.rightChild, val);
+        }
         if (heightLeft > heightRight) {
             return heightLeft + 1;
         } else {
@@ -195,16 +209,48 @@ public class BinarySearchTree<E extends Comparable<E>> {
 
     // Method #4.
     protected boolean isBalanced(Node n) {
-        if (n == null || n.value == null) {
+        if(n == null) {
             return false;
         }
-        int leftValue = findNode(n.leftChild.value) != null ? height(n.leftChild.value) : -1;
-        int rightValue = findNode(n.rightChild.value) != null ? height(n.rightChild.value) : -1;
+        Node nodeToCheck = findNode(n.value);
+        if (nodeToCheck == null || nodeToCheck.value == null) {
+            return false;
+        }
+        if(nodeToCheck.leftChild == null && nodeToCheck.rightChild == null) {
+            return true;
+        }
+        int leftValue = 0;
+        if (nodeToCheck.leftChild != null) {
+            leftValue = nodeToCheck.leftChild.value != null? height(n.leftChild.value) : -1;
+        }
+        int rightValue = nodeToCheck.rightChild.value != null? height(n.rightChild.value) : -1;
         return Math.abs((leftValue - rightValue)) <= 1;
     }
 
     // Method #5. .
     public boolean isBalanced() {
         return traverseTreeDFS(root);
+    }
+
+    public static void main(String[] args) {
+        BinarySearchTree<Integer> tree = new BinarySearchTree<>();
+        tree.add(8);
+        tree.add(6);
+        tree.add(4);
+        tree.add(2);
+        tree.add(16);
+        tree.add(10);
+        tree.add(9);
+        tree.add(20);
+        tree.add(12);
+        if(tree.findNode(2) != null) {
+            System.out.println("2 was found");
+        } else {
+            System.out.println("2 was not found");
+        }
+        System.out.println("Root is: " + tree.root.value);
+        System.out.println("Depth of 44 is: " + tree.depth(44));
+        System.out.println("Height of root is: " + tree.height(8));
+        System.out.println("Leaf as input value for isbalanced is: " + tree.isBalanced(tree.findNode(16)));
     }
 }
